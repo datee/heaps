@@ -1,5 +1,6 @@
 package hxd;
 
+import h3d.Engine;
 #if hlsdl
 import sdl.Cursor;
 #elseif hldx
@@ -113,6 +114,8 @@ class System {
 		timeoutTick();
 		#if hlsdl
 			sdl.Sdl.init();
+			if (Engine.ANTIALIASING>1)
+				sdl.Sdl.setGLOptions(sdl.Sdl.requiredGLMajor,sdl.Sdl.requiredGLMinor,24,8,1,Engine.ANTIALIASING);
 			@:privateAccess Window.initChars();
 			@:privateAccess Window.inst = new Window(title, width, height, fixed);
 			init();
@@ -169,7 +172,7 @@ class System {
 
 	#if hot_reload
 	@:hlNative("std","sys_check_reload")
-	static function check_reload( ?debug : hl.Bytes ) return false;
+	static function check_reload() return false;
 	#end
 
 	public dynamic static function reportError( e : Dynamic ) {
